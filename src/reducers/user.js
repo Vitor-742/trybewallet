@@ -5,7 +5,6 @@ const INITIAL_STATE = {
 };
 
 const user = (state = INITIAL_STATE, action) => {
-  console.log(action.email);
   switch (action.type) {
   case 'ADD_EMAIL':
     return {
