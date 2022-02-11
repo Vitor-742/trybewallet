@@ -72,7 +72,7 @@ class Wallet extends React.Component {
             {(expenses.length > 0 ? expenses.reduce((acc, item) => {
               const arrMoedas = Object.values(item.exchangeRates);
               const valorMoeda = arrMoedas.find((moeda) => moeda.code === item.currency);
-              const custo = item.value * parseFloat(valorMoeda.ask);// as vzes deixa so uma casa decimal
+              const custo = item.value * parseFloat(valorMoeda.ask);
               return acc + custo;
             }, 0).toFixed(2) : 0)}
 
@@ -151,16 +151,40 @@ class Wallet extends React.Component {
         <section>
           <table border="1px">
             <tr>
-              <th>Descrição</th>
-              <th>Tag</th>
-              <th>Método de pagamento</th>
               <th>Valor</th>
+              <th>Descrição</th>
               <th>Moeda</th>
+              <th>Método de pagamento</th>
+              <th>Tag</th>
               <th>Câmbio utilizado</th>
               <th>Valor convertido</th>
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
+            {expenses.length > 0 && (
+              <tr>
+                {expenses.map((despesa) => {
+                  const arrMoedas = Object.values(despesa.exchangeRates);
+                  const valorMoeda = arrMoedas
+                    .find((moeda) => moeda.code === despesa.currency);
+                  const cambioUt = parseFloat(valorMoeda.ask);
+                  const valorConv = cambioUt * despesa.value;
+                  const nameMoeda = valorMoeda.name.split('/')[0];
+                  const valorDespesa = parseFloat(despesa.value);
+                  return (
+                    <>
+                      <td>{valorDespesa.toFixed(2)}</td>
+                      <td>{despesa.description}</td>
+                      <td>{nameMoeda}</td>
+                      <td>{despesa.method}</td>
+                      <td>{despesa.tag}</td>
+                      <td>{cambioUt.toFixed(2)}</td>
+                      <td>{valorConv.toFixed(2)}</td>
+                      <td>Real</td>
+                      <td>Editar/Excluir</td>
+                    </>);
+                })}
+              </tr>)}
           </table>
         </section>
       </div>
