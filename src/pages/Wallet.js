@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addExpense } from '../actions';
+import { addExpense, removeExpense } from '../actions';
 
 class Wallet extends React.Component {
   constructor() {
@@ -59,6 +59,12 @@ class Wallet extends React.Component {
     const inpValue = event.target.parentNode.firstChild.lastChild;
     inpValue.value = '';
     this.setState({ despesa: { ...despesa, value: 0, id: despesa.id + 1 } });
+  }
+
+  handleDelete = (id) => {
+    const { deleteExp, expenses } = this.props;
+    const expense = expenses.find((item) => item.id === id);
+    deleteExp(expense);
   }
 
   render() {
@@ -181,7 +187,16 @@ class Wallet extends React.Component {
                       <td>{cambioUt.toFixed(2)}</td>
                       <td>{valorConv.toFixed(2)}</td>
                       <td>Real</td>
-                      <td>Editar/Excluir</td>
+                      <td>
+                        <button type="button">Editar</button>
+                        <button
+                          type="button"
+                          data-testid="delete-btn"
+                          onClick={ () => this.handleDelete(despesa.id) }
+                        >
+                          Excluir
+                        </button>
+                      </td>
                     </>);
                 })}
               </tr>)}
@@ -199,6 +214,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   submit: (obj) => dispatch(addExpense(obj)),
+  deleteExp: (despesa) => dispatch(removeExpense(despesa)),
 });
 
 Wallet.propTypes = {

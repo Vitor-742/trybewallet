@@ -1,5 +1,6 @@
 const ADD_EMAIL = 'ADD_EMAIL';
 const ADD_EXPENSE = 'ADD_EXPENSE';
+const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
 
 export const addEmail = (email) => ({ type: ADD_EMAIL, email });
 
@@ -11,3 +12,5 @@ export const addExpense = (obj) => async (dispatch) => {
   obj.exchangeRates = await exchangeRates;
   dispatch(addExpense2(obj));
 };
+
+export const removeExpense = (expense) => ({ type: REMOVE_EXPENSE, expense });
